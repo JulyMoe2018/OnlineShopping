@@ -24,6 +24,13 @@ namespace OnlineShopping.Controllers
             ViewBag.Products = products;
             return View();
         }
+        public ActionResult Index3()
+        {
+            List<Product> products = _ctx.Products.Where(p => p.Deleted == false).ToList<Product>();
+
+            ViewBag.Products = products;
+            return View();
+        }
 
         public ActionResult Details(int productId)
         {
