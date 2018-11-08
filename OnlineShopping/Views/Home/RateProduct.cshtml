@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "Customer Feedback";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Customer Feedback</h2>
+<input type="hidden" id="hdnId" value="12"/>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <table cellpadding="50">
+            <tr>
+                <th><b>Feedback :</b></th>
+                <td><textarea cols="35" id="txtFeedback" name="feedback" rows="5" style="color:red"></textarea></td>
+            </tr>
+            <tr>
+                <th>&nbsp;</th>
+                <td>
+                    <input type="submit" id="btnSend" value="Save" class="btn btn-info" style="color: white;background: #e238c4;border-color:#e238c4"/>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        //Send event handler.
+        $("body").on("click", "#btnSend", function () {
+            var id = $("#hdnId");
+            var feedback = $("#txtFeedback");
+            $.ajax({
+                type: "POST",
+                url: "/Home/Feedback",
+                data: '{id: "' + id.val() + '", feedback: "' + feedback.val() + '" }',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    if (result == 1)
+                    {
+                        alert('Submitting successfully');
+                        window.location.href = '/Home/Index';
+                    }
+                    else
+                    {
+                        window.location.href = '/Account/LogIn';
+                    }
+                    
+                }, error: function (err) {
+                    alert(err.statusText);
+                }
+            });
+        });
+    </script>
+}
+
+
+
+

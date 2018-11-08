@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "Reviews";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Product Reviews</h3>
+@if (ViewBag.Reviews.Count == 0)
+{
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <strong>There is no feedback for this product.</strong>
+        </div>
+    </div>
+}
+else
+{
+    foreach (Feedback item in ViewBag.Reviews)
+    {
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table cellpadding="10">
+                    <tr>
+                        <td><b>@item.Email</b></td>
+                    </tr>
+
+                    <tr>
+                        <td>@item.Feedback1</td>
+                    </tr>
+
+                    <tr>
+                        <td><span style="color:darkblue;">@item.CreateTime</span></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    }
+}

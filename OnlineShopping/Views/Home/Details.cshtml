@@ -1,0 +1,91 @@
+﻿@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Product Details</h3>
+   @foreach (var item in ViewBag.productDetails)
+   {
+       <input type="hidden" id="hdnId" value="@item.PID" />
+       <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="col-sm-3 col-md-6">
+                    <img id="imgProduct" src="@String.Format("{0}{1}",Url.Content("~/Photo/Products/"), item.Photo)" height="auto" width="150px" alt="@item.Photo" />
+                </div>
+                <table cellpadding="10">
+                    <tr>
+                        <th><b>Product Name:</b></th>
+                        <td>@item.PName</td>
+                    </tr>
+                    <tr>
+                        <th><b>Product Price:</b></th>
+                        <td>@item.UnitPrice</td>
+                    </tr>
+                    <tr>
+                        <th><b>Units In Stock:</b></th>
+                        <td>@item.UnitsInStock</td>
+                    </tr>
+                    <tr>
+                        <th><b>Category:</b></th>
+                        <td>@item.Category</td>
+                    </tr>
+                    <tr>
+                        <th><b>Description:</b></th>
+                        <td>@item.Description</td>
+                    </tr>
+                    <tr>
+                        <th>
+                            @if (Session["User"] != null && Session["User"].ToString() == "admin@gmail.com")
+                            {
+                                <div>
+                                    <a href="@Url.Action("Edit", "Home",new {id = item.PID})" style="color: #e238c4">Edit</a> |
+                                    <a href="javascript:;" id="Delete" style="color: #e238c4">Delete</a>
+                                </div>                               
+                            }
+                        </th>
+                        <td>@Html.ActionLink("Add to Cart", "AddToCart", "Home", new { id = item.PID },new { style = "color: #e238c4" })</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.ActionLink("Reviews", "Reviews", "Home", new { id = item.PID }, new { style = "color: red;weight:bold;" })</td>         
+                        <td>
+                            @Html.ActionLink("Rate This Product", "RateProduct", "Home", new { id = item.PID }, new { style = "color: red;weight:bold;" })
+                        </td>
+                    </tr>
+                </table>              
+            </div>
+        </div>
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#imgProduct').mouseover(function () {
+                $(this).css("cursor", "pointer");
+                $(this).animate({ width: "300px" }, 'slow');
+            });
+            $('#imgProduct').mouseout(function () {
+                $(this).animate({ width: "150px" }, 'slow');
+            });
+
+            //Delete event handler.
+            $("body").on("click", "#Delete", function () {
+                if (confirm("Are you sure you want to delete this record ?")) {
+                    var id = document.getElementById('hdnId').value;
+                    $.ajax({
+                        type: "POST",
+                        url: "/Home/DeleteProduct",
+                        data: '{id: ' + id + '}',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (result) {
+                            alert('Product deleted successfully');
+                            window.location.href = '/Home/Index';
+                        }, error: function (err) {
+                            alert(err.statusText);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    }

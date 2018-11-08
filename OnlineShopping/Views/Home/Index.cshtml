@@ -1,0 +1,71 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<h2>Products</h2>
+<form action="/Home/Category" method="get" id="category" class="option" style="float:left;margin-right:3%;width:25%;">
+    <select id="catName" class="form-control" name="catName" onchange="$('#category').submit()">
+        <option>--- Search for Products ---</option>
+        <option value="">All</option>
+        <option value="Earrings">Earrings</option>
+        <option value="Watch">Watch</option>
+        <option value="Bags">Bags</option>
+    </select>
+</form>
+
+<form action="/Home/Discount" method="get" id="discount" class="option">
+    <select id="disName" class="form-control" name="disName" onchange="$('#discount').submit()">
+        <option>--- Search for Discount ---</option>
+        <option value="">All</option>
+        <option value="10">10% or More</option>
+        <option value="20">20% or More</option>
+        <option value="30">30% or More</option>
+        <option value="40">40% or More</option>
+        <option value="50">50% or More</option>
+        <option value="60">60% or More</option>
+        <option value="70">70% or More</option>
+    </select>
+</form>
+
+<div style="margin-top:1%">
+    @if (Session["User"] != null && Session["User"].ToString() == "admin@gmail.com")
+    {
+        @Html.ActionLink("Add New Product", "Creation", "Home", null, new { style = "margin-left:1%;color: red" })
+    }  
+</div>
+@if (ViewBag.Products.Count == 0)
+{
+    <br />
+    <div id="EmptyDataMsg" class="alert alert-info">
+        <strong>Welcome!</strong> Our shop is currently empty.
+    </div>
+}
+else
+{
+    <div class="list-view">
+        @foreach (var item in ViewBag.Products)
+        {
+            <div class="list-item">
+                <a href="@Url.Action("Details", "Home", new { productId = item.PID })">
+                    <img id="imgProduct" src="@String.Format("{0}{1}",Url.Content("~/Photo/Products/"), item.Photo)" height="auto" width="100px" alt="@item.Photo" />
+                 </a><br />
+                    <span class="p-name">@item.PName</span>
+                    <span class="p-description">@item.Description</span>
+                    <div class="add-to-cart">
+                        @Html.ActionLink("add to cart", "AddToCart", "Home", new { id = item.PID }, null)
+                        <span class="p-price">@String.Format("{0:c}", item.UnitPrice)</span>
+                    </div>
+                    <span class="p-unit">
+                        @item.UnitsInStock
+                        @if (item.UnitsInStock > 1)
+                        {
+                            <text>units</text>
+                        }
+                        else
+                        {
+                            <text>unit</text>
+                        }
+                    </span>
+          </div>
+        }
+   </div>
+}

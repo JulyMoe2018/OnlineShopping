@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "Congratuation!";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var customer = ViewBag.Customer;
+}
+
+<h2>Congratuation</h2>
+
+<div class="alert alert-success" style="color: black;background: #f98bf775;border-color:#da49c6ed;">
+    @foreach (var data in ViewBag.Order)
+    {
+        <p style="font-weight:bold;margin-bottom:1%;">
+            Order Id = @data.Order.OrderID <br /> Delivery Date = @data.Order.DeliveryDate.ToString("MMM dd yyy")
+        </p>
+
+            <table style="float:left;margin-right:10%;">
+                <tr>
+                    <th>Bill to: </th>
+                </tr>
+                <tr>
+                    <td>----------------</td>
+                </tr>
+                @foreach (var item in ViewBag.Register)
+                {
+                    <tr>
+                        <td>@item.Register.FirstName @item.Register.LastName</td>
+                    </tr>
+                    <tr>
+                        <td>@item.Register.Address , @item.City.City1 </td>
+                    </tr>
+                    <tr>
+                        <td>Phone: @item.Register.Telephone</td>
+                    </tr>
+                }
+            </table>
+
+            <table>
+                <tr>
+                    <th>Delivery to: </th>
+                </tr>
+                <tr>
+                    <td>-------------------------</td>
+                </tr>
+                <tr>
+                    <td>@customer.FName @customer.LName </td>
+                </tr>
+                <tr>
+                    <td>@customer.Address</td>
+                </tr>
+                <tr>
+                    <td>Phone : @customer.Telephone</td>
+                </tr>
+            </table>
+
+            <p style="margin-top:3%;">
+                Note: The amount of $ @data.TotalPrice should be paid at the time of delivery of your goods.<br />
+                But,the delevery fee is not yet added to this invoice. <br />
+                You will be contacted by phone or email within 2 working hours (Monday-Friday) to confirm your order and address.
+            </p>
+
+            <p style="font-style:oblique;font-size:large;margin-top:3%;margin-bottom:1%;">Thank you for your business!</p>
+    }
+</div>
