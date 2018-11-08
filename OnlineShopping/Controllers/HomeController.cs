@@ -9,12 +9,19 @@ namespace OnlineShopping.Controllers
 {
     public class HomeController : BaseController
     {
-        // GET: Home for testing
+        // GET: Home for testin
         public ActionResult Index()
         {
             List<Product> products = _ctx.Products.Where(p => p.Deleted == false).ToList<Product>();
       
             ViewBag.Products = products;         
+            return View();
+        }
+        public ActionResult Index2()
+        {
+            List<Product> products = _ctx.Products.Where(p => p.Deleted == false).ToList<Product>();
+
+            ViewBag.Products = products;
             return View();
         }
 
